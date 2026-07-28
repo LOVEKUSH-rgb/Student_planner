@@ -10,7 +10,7 @@
 
 <body>
     <div class="app-container">
-        <!-- Sidebar / Form Section -->
+        <!-- Sidebar / Forms Section -->
         <aside class="sidebar">
             <h2>Add New Task</h2>
             <form id="task-form">
@@ -40,24 +40,46 @@
                 <button type="submit" class="btn-primary">Add Task</button>
             </form>
 
-            <div class="quick-actions">
+            <hr style="border: 0; border-top: 1px solid #30363d; margin: 20px 0;">
+
+            <h2>Add Class Schedule</h2>
+            <form id="schedule-form">
+                <label for="class-name">Course/Subject</label>
+                <input type="text" id="class-name" required placeholder="e.g., Data Structures">
+
+                <label for="class-day">Day of Week</label>
+                <select id="class-day">
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                </select>
+
+                <label for="class-time">Time</label>
+                <input type="text" id="class-time" required placeholder="e.g., 10:00 AM - 11:30 AM">
+
+                <button type="submit" class="btn-secondary">Add to Timetable</button>
+            </form>
+
+            <div class="quick-actions" style="margin-top: 20px;">
                 <h3>Quick Actions</h3>
                 <button id="clear-completed" class="btn-secondary">Clear Completed Tasks</button>
-                <button id="delete-all" class="btn-danger">Delete All Tasks</button>
+                <button id="delete-all" class="btn-danger">Delete All Data</button>
             </div>
         </aside>
 
         <!-- Main Content Section -->
         <main class="main-content">
             <header>
-                <h1>🎓 My Student Planner</h1>
-                <p>Welcome to your personal web-based task manager!</p>
+                <h1>🎓 My Student Planner & Timetable</h1>
+                <p>Your ultimate academic productivity hub</p>
             </header>
 
             <!-- Dashboard Statistics Cards -->
             <section class="stats-container">
                 <div class="stat-card">
-                    <h3>Total</h3>
+                    <h3>Total Tasks</h3>
                     <p id="stat-total">0</p>
                 </div>
                 <div class="stat-card">
@@ -81,12 +103,23 @@
                 </select>
             </section>
 
-            <section class="task-section">
-                <h2>📋 Your Tasks</h2>
-                <div id="task-list" class="task-grid">
-                    <p class="no-tasks">No tasks found yet. Add one using the sidebar!</p>
-                </div>
-            </section>
+            <div class="content-split">
+                <!-- Task Manager View -->
+                <section class="task-section" style="flex: 1;">
+                    <h2>📋 Your Tasks</h2>
+                    <div id="task-list" class="task-grid">
+                        <p class="no-tasks">No tasks found yet. Add one using the sidebar!</p>
+                    </div>
+                </section>
+
+                <!-- Daily Timetable View -->
+                <section class="timetable-section" style="flex: 1;">
+                    <h2>📅 Class Timetable</h2>
+                    <div id="timetable-list" class="task-grid">
+                        <p class="no-tasks">No classes scheduled yet.</p>
+                    </div>
+                </section>
+            </div>
         </main>
     </div>
 

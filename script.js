@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const taskForm = document.getElementById('task-form');
+    const scheduleForm = document.getElementById('schedule-form');
     const taskList = document.getElementById('task-list');
+    const timetableList = document.getElementById('timetable-list');
+
     const clearCompletedBtn = document.getElementById('clear-completed');
     const deleteAllBtn = document.getElementById('delete-all');
     const searchInput = document.getElementById('search-input');
@@ -11,11 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const statCompleted = document.getElementById('stat-completed');
 
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    renderTasks();
+    let schedule = JSON.parse(localStorage.getItem('schedule')) || [];
 
+    renderAll();
+
+    // Handle Task Form Submission
     taskForm.addEventListener('submit', (e) => {
         e.preventDefault();
-
         const newTask = {
             id: Date.now(),
             title: document.getElementById('task-title').value,
@@ -25,19 +30,35 @@ document.addEventListener('DOMContentLoaded', () => {
             priority: document.getElementById('task-priority').value,
             completed: false
         };
-
         tasks.push(newTask);
         saveAndRender();
         taskForm.reset();
     });
 
+    // Handle Timetable Form Submission
+    scheduleForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const newClass = {
+            id: Date.now(),
+            name: document.getElementById('class-name').value,
+            day: document.getElementById('class-day').value,
+            time: document.getElementById('class-time').value
+        };
+        schedule.push(newClass);
+        saveAndRender();
+        scheduleForm.reset();
+    });
+
     searchInput.addEventListener('input', renderTasks);
     filterCategory.addEventListener('change', renderTasks);
 
+    function renderAll() {
+        renderTasks();
+        renderTimetable();
+    }
+
     function renderTasks() {
         taskList.innerHTML = '';
-
-        // Filter and Search logic
         const searchText = searchInput.value.toLowerCase();
         const selectedCategory = filterCategory.value;
 
@@ -47,14 +68,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return matchesSearch && matchesCategory;
         });
 
-        // Update Dashboard Stats
         statTotal.textContent = tasks.length;
         const completedCount = tasks.filter(t => t.completed).length;
         statCompleted.textContent = completedCount;
         statPending.textContent = tasks.length - completedCount;
 
         if (filteredTasks.length === 0) {
-            taskList.innerHTML = '<p class="no-tasks">No tasks found matching your filter.</p>';
+            taskList.innerHTML = '<p class="no-tasks">No tasks found.</p>';
             return;
         }
 
@@ -78,15 +98,38 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = `task-card ${task.completed ? 'completed' : ''} ${statusClass}`;
             card.innerHTML = `
                 <div>
-                    <h3>${task.title} ${badgeText ? `<span style="font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; background: #30363d; margin-left: 8px;">${badgeText}</span>` : ''}</h3>
-                    <p style="font-size: 0.85rem; color: #8b949e; margin-top: 4px;">Course: ${task.course} | Category: ${task.category} | Deadline: ${task.deadline} | Priority: ${task.priority}</p>
+                    <h3>${task.title} ${badgeText ? `<span style="font-size: 0.7rem; padding: 2px 5px; border-radius: 4px; background: #30363d; margin-left: 6px;">${badgeText}</span>` : ''}</h3>
+                    <p style="font-size: 0.8rem; color: #8b949e; margin-top: 3px;">${task.course} | ${task.category} | 📅 ${task.deadline}</p>
                 </div>
                 <div>
-                    <input type="checkbox" ${task.completed ? 'checked' : ''} onclick="toggleTask(${task.id})" style="width: 20px; height: 20px; cursor: pointer;">
-                    <button onclick="deleteTask(${task.id})" style="background: none; border: none; color: #f85149; cursor: pointer; margin-left: 10px; font-size: 1rem;">🗑️</button>
+                    <input type="checkbox" ${task.completed ? 'checked' : ''} onclick="toggleTask(${task.id})" style="width: 18px; height: 18px; cursor: pointer;">
+                    <button onclick="deleteTask(${task.id})" style="background: none; border: none; color: #f85149; cursor: pointer; margin-left: 8px;">🗑️</button>
                 </div>
             `;
             taskList.appendChild(card);
+        });
+    }
+
+    function renderTimetable() {
+        timetableList.innerHTML = '';
+        if (schedule.length === 0) {
+            timetableList.innerHTML = '<p class="no-tasks">No classes scheduled yet.</p>';
+            return;
+        }
+
+        schedule.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'task-card';
+            card.innerHTML = `
+                <div>
+                    <h3>📚 ${item.name}</h3>
+                    <p style="font-size: 0.8rem; color: #8b949e; margin-top: 3px;">Day: <strong>${item.day}</strong> | Time: ${item.time}</p>
+                </div>
+                <div>
+                    <button onclick="deleteClass(${item.id})" style="background: none; border: none; color: #f85149; cursor: pointer;">🗑️</button>
+                </div>
+            `;
+            timetableList.appendChild(card);
         });
     }
 
@@ -100,6 +143,11 @@ document.addEventListener('DOMContentLoaded', () => {
         saveAndRender();
     };
 
+    window.deleteClass = function (id) {
+        schedule = schedule.filter(s => s.id !== id);
+        saveAndRender();
+    };
+
     clearCompletedBtn.addEventListener('click', () => {
         tasks = tasks.filter(t => !t.completed);
         saveAndRender();
@@ -107,11 +155,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     deleteAllBtn.addEventListener('click', () => {
         tasks = [];
+        schedule = [];
         saveAndRender();
     });
 
     function saveAndRender() {
         localStorage.setItem('tasks', JSON.stringify(tasks));
-        renderTasks();
+        localStorage.setItem('schedule', JSON.stringify(schedule));
+        renderAll();
     }
 });
