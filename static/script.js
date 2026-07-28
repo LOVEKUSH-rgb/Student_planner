@@ -13,12 +13,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const statPending = document.getElementById('stat-pending');
     const statCompleted = document.getElementById('stat-completed');
 
-    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    let schedule = JSON.parse(localStorage.getItem('schedule')) || [];
+    let tasks = [];
+    let schedule = [];
 
-    renderAll();
+    // Fetch data from Flask backend on load
+    fetchData();
 
-    // Handle Task Form Submission
+    function fetchData() {
+        fetch('/api/tasks')
+            .then(res => res.json())
+            .then(data => {
+                tasks = data;
+                renderTasks();
+            });
+
+        fetch('/api/schedule')
+            .then(res => res.json())
+            .then(data => {
+                schedule = data;
+                renderTimetable();
+            });
+    }
+
     taskForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const newTask = {
@@ -30,12 +46,18 @@ document.addEventListener('DOMContentLoaded', () => {
             priority: document.getElementById('task-priority').value,
             completed: false
         };
-        tasks.push(newTask);
-        saveAndRender();
-        taskForm.reset();
+
+        fetch('/api/tasks', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newTask)
+        }).then(res => res.json()).then(data => {
+            tasks = data.tasks;
+            renderTasks();
+            taskForm.reset();
+        });
     });
 
-    // Handle Timetable Form Submission
     scheduleForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const newClass = {
@@ -44,18 +66,20 @@ document.addEventListener('DOMContentLoaded', () => {
             day: document.getElementById('class-day').value,
             time: document.getElementById('class-time').value
         };
-        schedule.push(newClass);
-        saveAndRender();
-        scheduleForm.reset();
+
+        fetch('/api/schedule', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newClass)
+        }).then(res => res.json()).then(data => {
+            schedule = data.schedule;
+            renderTimetable();
+            scheduleForm.reset();
+        });
     });
 
     searchInput.addEventListener('input', renderTasks);
     filterCategory.addEventListener('change', renderTasks);
-
-    function renderAll() {
-        renderTasks();
-        renderTimetable();
-    }
 
     function renderTasks() {
         taskList.innerHTML = '';
@@ -135,33 +159,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.toggleTask = function (id) {
         tasks = tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
-        saveAndRender();
+        renderTasks();
     };
 
     window.deleteTask = function (id) {
         tasks = tasks.filter(t => t.id !== id);
-        saveAndRender();
+        renderTasks();
     };
 
     window.deleteClass = function (id) {
         schedule = schedule.filter(s => s.id !== id);
-        saveAndRender();
+        renderTimetable();
     };
 
     clearCompletedBtn.addEventListener('click', () => {
         tasks = tasks.filter(t => !t.completed);
-        saveAndRender();
+        renderTasks();
     });
 
     deleteAllBtn.addEventListener('click', () => {
         tasks = [];
         schedule = [];
-        saveAndRender();
+        renderTasks();
+        renderTimetable();
     });
-
-    function saveAndRender() {
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-        localStorage.setItem('schedule', JSON.stringify(schedule));
-        renderAll();
-    }
 });

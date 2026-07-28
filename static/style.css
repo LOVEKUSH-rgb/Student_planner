@@ -108,7 +108,6 @@ header p {
     font-size: 0.95rem;
 }
 
-/* Stats Dashboard */
 .stats-container {
     display: flex;
     gap: 15px;
@@ -136,7 +135,6 @@ header p {
     color: #58a6ff;
 }
 
-/* Filter Section */
 .filter-section {
     display: flex;
     gap: 15px;
@@ -148,7 +146,6 @@ header p {
     margin-bottom: 0;
 }
 
-/* Side-by-side layout for tasks and timetable */
 .content-split {
     display: flex;
     gap: 20px;
