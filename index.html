@@ -54,6 +54,33 @@
                 <p>Welcome to your personal web-based task manager!</p>
             </header>
 
+            <!-- Dashboard Statistics Cards -->
+            <section class="stats-container">
+                <div class="stat-card">
+                    <h3>Total</h3>
+                    <p id="stat-total">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Pending</h3>
+                    <p id="stat-pending">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Completed</h3>
+                    <p id="stat-completed">0</p>
+                </div>
+            </section>
+
+            <!-- Search and Filter Section -->
+            <section class="filter-section">
+                <input type="text" id="search-input" placeholder="🔍 Search tasks by title...">
+                <select id="filter-category">
+                    <option value="All">All Categories</option>
+                    <option value="Homework">Homework</option>
+                    <option value="Project">Project</option>
+                    <option value="Exam">Exam</option>
+                </select>
+            </section>
+
             <section class="task-section">
                 <h2>📋 Your Tasks</h2>
                 <div id="task-list" class="task-grid">

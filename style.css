@@ -90,12 +90,12 @@ button {
 
 .main-content {
     flex: 1;
-    padding: 40px;
+    padding: 30px;
     overflow-y: auto;
 }
 
 header {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 header h1 {
@@ -107,10 +107,50 @@ header p {
     color: #8b949e;
 }
 
+/* Stats Dashboard */
+.stats-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    padding: 15px;
+    border-radius: 8px;
+    flex: 1;
+    text-align: center;
+}
+
+.stat-card h3 {
+    font-size: 0.85rem;
+    color: #8b949e;
+    margin-bottom: 5px;
+}
+
+.stat-card p {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #58a6ff;
+}
+
+/* Filter Section */
+.filter-section {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.filter-section input,
+.filter-section select {
+    margin-bottom: 0;
+}
+
 .task-grid {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
 }
 
 .task-card {
@@ -124,8 +164,16 @@ header p {
 }
 
 .task-card.completed {
-    opacity: 0.6;
+    opacity: 0.5;
     text-decoration: line-through;
+}
+
+.task-card.overdue {
+    border-left: 5px solid #da3633;
+}
+
+.task-card.urgent {
+    border-left: 5px solid #d29922;
 }
 
 .no-tasks {
