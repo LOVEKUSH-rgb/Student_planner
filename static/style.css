@@ -196,7 +196,7 @@ header p {
     display: inline-block !important;
 }
 
-/* Mobile Responsive Adjustments */
+/* Mobile Responsive Collapsible Drawer */
 @media (max-width: 768px) {
     body {
         height: auto;
@@ -206,12 +206,23 @@ header p {
     .app-container {
         flex-direction: column;
         height: auto;
+        position: relative;
     }
 
     .sidebar {
+        position: absolute;
+        top: 60px;
+        left: 0;
         width: 100%;
+        background-color: #161b22;
         border-right: none;
         border-bottom: 1px solid #30363d;
+        z-index: 1000;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    }
+
+    .sidebar.collapsed {
+        display: none;
     }
 
     .main-content {
