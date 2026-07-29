@@ -185,3 +185,31 @@ header p {
     font-style: italic;
     font-size: 0.9rem;
 }
+
+/* Mobile Responsive Fix */
+@media (max-width: 768px) {
+    body {
+        height: auto;
+        overflow: auto;
+    }
+
+    .app-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #30363d;
+    }
+
+    .main-content {
+        padding: 15px;
+        overflow-y: visible;
+    }
+
+    .content-split {
+        flex-direction: column;
+    }
+}
