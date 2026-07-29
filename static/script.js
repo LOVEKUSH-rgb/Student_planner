@@ -13,8 +13,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const statPending = document.getElementById('stat-pending');
     const statCompleted = document.getElementById('stat-completed');
 
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.querySelector('.sidebar');
+
     let tasks = [];
     let schedule = [];
+
+    // Toggle Sidebar on Mobile View
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+        });
+    }
 
     // Fetch data from Flask backend on load
     fetchData();
