@@ -191,7 +191,12 @@ header p {
     font-size: 0.9rem;
 }
 
-/* Mobile Responsive Collapsible Menu */
+/* Always show the toggle button on all screens */
+#sidebar-toggle {
+    display: inline-block !important;
+}
+
+/* Mobile Responsive Adjustments */
 @media (max-width: 768px) {
     body {
         height: auto;
@@ -207,10 +212,6 @@ header p {
         width: 100%;
         border-right: none;
         border-bottom: 1px solid #30363d;
-    }
-
-    #sidebar-toggle {
-        display: inline-block !important;
     }
 
     .main-content {
